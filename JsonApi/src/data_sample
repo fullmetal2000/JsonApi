@@ -1,0 +1,208 @@
+  data1='''{"adom": "root", "flags": "discover", "want_id": "enable","create":
+"enable","device": {"name": "ddt01", "desc": "dvm__dev", "sn":
+"FGT40C3911003045", "platform_str": "FortiGate-40C", "os_type": 0,
+"os_ver": 1, "mgmt_mode": 1, "conn_mode": 1, "adm_usr": "admin",
+"adm_pass": "", "flags": 56, "opts": 3, "ip": "10.2.105.62",}}'''
+       data2='''[
+            {
+                "name": "root",
+                "object member": [
+                    {
+                        "name": "grp_test01",
+                    }]
+            }]'''
+
+       data3='''[{"devid": "device/dev_test01","name": "root"},{"devid": "device/dev_test01","name":"test"}]'''
+       data4='''[{"name": "grp_kkk",
+        "desc": "dvm",
+        "type": 1,
+        "os_type": 0,
+        "object member": [{"name": "FGT40C3911003045","vdom": "root",}]}]'''
+       data5='''[{
+                "state": 1,
+                "src": 1,
+                "flags": 0,
+                "percent": 90,
+                "tot_percent": 90,
+                "num_lines": 1,
+                "num_err": 0,
+                "num_warn": 0,
+                "num_done": 0,
+                "pid": 123,
+                "adom": "root",
+                "start_tm": 1234561234,
+                "user": "admin",
+                "title": "test",
+                "line":[
+
+                {
+                    "state": 1,
+                    "err": 0,
+                    "percent": 90,
+                    "name": "FG12121212",
+                    "ip": 123412,
+                    "detail": "devaddsuccess1112",
+                    "oid": "FGT40C3911003045",
+                    "vdom": "root"
+                }
+                ]
+            }]'''
+
+       data6='''{
+                "state": 1,
+                "src": 1,
+                "flags": 0,
+                "percent": 88,
+                "tot_percent": 99,
+                "num_lines": 1,
+                "num_err": 0,
+                "num_warn": 0,
+                "num_done": 0,
+                "pid": 123,
+                "adom": "root",
+                "start_tm": 1234561234,
+                "user": "admin",
+                "title": "Salaam",
+
+            }'''
+
+       data7='''{
+                    "state": 1,
+                    "err": 0,
+                    "percent": 10,
+                    "name": "",
+                    "ip": 123412,
+                    "detail": "ghg",
+                    "oid": "FGT40C3911003045",
+                    "vdom": "root"
+                }'''
+
+
+
+       c1=''' [
+            {
+                "name": "folder01",
+                "type": "folder",
+
+            },
+
+            {
+                "name": "folder02",
+                "type": "folder",
+            }
+            ]'''
+
+       c2='''[
+            {
+                "name": "subfolder03",
+                "type": "folder",
+            },
+
+            {
+                "name": "subfolder04",
+                "type": "folder",
+                "children": [
+                    {
+                        "name": "ssfolder01",
+                        "type": "folder",
+                    },
+                    {
+                        "name": "pkg01",
+                        "type": "pkg",
+                        "scope": [
+                            {
+                                "name": "All_FortiGate"
+                            },
+
+                            {
+                                "name": "FG600C3912800651",
+                                "vdom": "root",
+                            },
+
+                            {
+
+                                "name": "FGT40C3911003045",
+
+                                "vdom": "root",
+
+                            },
+
+                        ],
+
+                    }
+
+                ]
+
+            },
+
+            {
+
+                "name": "pkg02",
+
+                "type": "pkg",
+
+                "scope": [
+
+                    {
+
+                        "name": "All_FortiGate"
+
+                    },
+
+                    {
+
+                        "name": "FGT40C3911003045",
+
+                        "vdom": "root",
+
+                    },
+
+                ],
+
+            }
+
+            ]'''
+
+
+
+
+
+
+
+       c3='''[
+            {
+                "name": "default",
+                "type": "pkg",
+                "scope": [
+                    {    "name": "FGT40C3911003045",
+                        "vdom": "root",
+                    }
+                ]
+            }
+            ]'''
+
+
+
+       p1='''[
+            {
+                "policyid": 99990,
+                "srcaddr": "all",
+                "dstaddr": "all",
+                "schedule": "always",
+                "service": "HTTP",
+                "srcintf": "any",
+
+                "dstintf": "any"
+
+            },
+            {
+
+                "policyid": 99991,
+                "srcaddr": "all",
+                "dstaddr": "all",
+                "schedule": "always",
+                "service": "DHCP",
+                "srcintf": "any",
+                "dstintf": "any"
+
+            }]'''
