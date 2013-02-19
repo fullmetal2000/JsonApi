@@ -398,6 +398,18 @@ class fmgApi5:
                 except:
                     pass
                 return chart,chart_type_list
+        def _get_chart_list(self,obj):
+                chart_name_list=[]
+                chart_dataset_list=[]
+                chart_type_list=[]
+                try:
+                    for e in obj['result'][0]['data']:
+                        chart_name_list.append(e['name'])
+                        chart_dataset_list.append(e['dataset'])
+                        chart_type_list.append(e['graph-type'])
+                except:
+                    pass
+                return chart_name_list,chart_dataset_list,chart_type_list
 
         def _parse_layout_cmd(self,obj):
                 layout_name_list=[]
@@ -449,7 +461,7 @@ class fmgApi5:
         def _create_all_charts_template(self,session,num):
             #1. Retrieve all the charts in the system and put into a chartlist;
             obj=self._read("config/adom/"+self._myadom+"/sql-report/chart", '', session, '')
-            chartList,obj2,obj3=self._parse_chart_cmd(obj)
+            chartList,obj2,obj3=self._get_chart_list(obj)
             num_of_charts=len(chartList)
             #2. Build a jason request payload (data)
             data="[{\"title\": \"All_charts_template\", \"component\":["
@@ -481,7 +493,7 @@ class fmgApi5:
         def _create_template(self,session,num):
             #1. Retrieve all the charts in the system and put into a chartlist;
             obj=self._read("config/adom/"+self._myadom+"/sql-report/chart", '', session, '')
-            chartList,obj2,obj3=self._parse_chart_cmd(obj)
+            chartList,obj1,obj2=self._get_chart_list(obj)
             chart_num=len(chartList)
             #2. Build a jason request payload (data)
 
@@ -538,9 +550,11 @@ class fmgApi5:
 
                 layoutSubObj="\"report-layout\":["+"{"+"\"layout-id\""+":"  + str(ch+1)  + "}"+"]"
                 devicesSubObj="\"devices\":["+"{"+"\"devices-name\""+":"  + "\"All_FortiGates\""  + "}"+"]"
+                filterSubObj="\"filter\":["+"{"+"\"name\""+":"  + "\"yourfield\""  +","+"\"value\""+":"  + "\"yourvalue\""  +"," "}"+"]"
                 #["00:00", "2011/08/01"]
                 data=data+layoutSubObj+","
-                data=data+devicesSubObj
+                data=data+devicesSubObj+","
+                data=data+filterSubObj
                 data=data+"}"
                 print "data="+data
                 try:
@@ -596,21 +610,31 @@ class fmgApi5:
             except:
                 pass
 
+
         def _create_chart(self,session,num):
             # Build a jason request payload (data)
-            total_template=range(num)
+            total_template=range(int(num))
             for ch in total_template:
                 
-                data="[{\"name\": \"chart"+str(ch)+"\","+"\"category\":"+"\"traffic"+"\","+"\"description\":"+"\"chart"+str(ch)+"\","+"\"dataset\":"+"\"dataset"+str(ch) +"\"," +"\"resolve-hostname\":"+"0" +","+"\"favorite\":"+"0" +"," +"\"graph-type\":"+"\"table" +"\"," +"\"table-subtype\":"+"\"basic" +"\"," +"\"line-subtype\":"+"\"basic" +"\","+"\"graph-columns\":"+"\"one-column" +"\"," +"\"order-by\":"+"\"yourfield" +"\","+"\"show-table\":"+"0" +"," +"\"x-axis-label\":"+"\"your-x-lablel"+"\","+"\"x-axis-data-binding\":"+"\"field1"+"\"," +"\"x-axis-data-top\":"+"10"+","+"\"y-axis-label\":"+"\"your-y-lablel"+"\","  +"\"y-axis-data-binding\":"+"\"field2"+"\"," +"\"y2-axis-label\":"+"\"your-y2-lablel"+"\","  +"\"y2-axis-data-binding\":"+"\"field2"+"\","+"\"y-axis-group\":"+"0"+"," +"\"y-axis-group-by\":"+"\"field2"+"\"," +"\"y-axis-data-top\":"+"10"+","+"\"scale\":"+"1"+"," +"\"protected\":"+"0 "                                                                
+                data="[{\"name\": \"chart"+str(ch)+"\","+"\"category\":"+"\"traffic"+"\","+"\"description\":"+"\"chart"+str(ch)+"\","+"\"dataset\":"+\
+                "\"dataset"+str(ch) +"\"," +"\"resolve-hostname\":"+"0" +","+"\"favorite\":"+"0" +"," \
+                +"\"graph-type\":"+"\"table" +"\"," +"\"table-subtype\":"+"\"basic" +"\"," +"\"line-subtype\":"+"\"basic" +"\","+"\"graph-columns\":"+\
+                "\"one-column" +"\"," +"\"order-by\":"+"\"user" +"\","+"\"show-table\":"+"0" +"," +"\"x-axis-label\":"+"\"your-x-lablel"+"\","+"\"x-axis-data-binding\":"+\
+                 "\"user"+"\"," +"\"x-axis-data-top\":"+"10"+","+"\"y-axis-label\":"+"\"your-y-lablel"+"\","  +"\"y-axis-data-binding\":"+"\"group"+"\"," \
+                 +"\"y2-axis-label\":"+"\"your-y2-lablel"+"\","  +"\"y2-axis-data-binding\":"+"\""+"\","+"\"y-axis-group\":"+"0"+"," +\
+                 "\"y-axis-group-by\":"+"\"group"+"\"," +"\"y-axis-data-top\":"+"10"+","+"\"scale\":"+"1"+"," +"\"protected\":"+"0 "                                                                
+                
                 data=data+","+"\"drill-down-table\":["
                 drillDownObj1="{"+"\"table-id\""+":"  + "1"  +  ","  +  " \"chart\""+":" + "\"chart0\"" +"}"
                 data=data+drillDownObj1
                 data=data+"]"
                 data=data+","+"\"table-columns\":["
-                tableColumnObj1="{"+"\"id\""+":" + "1"  +  ","  +  " \"data-type\""+":" + "0"+"," +" \"data-binding\":"+"\"field1\""+"," +" \"column-num\""+":" + "10"+","+ " \"data-top\""+":" + "10"+","+ " \"column-attr\""+":" + "0"+","+ " \"column-icon\""+":" + "0"+"}"
-                tableColumnObj2="{"+"\"id\""+":" + "2"  +  ","  +  " \"data-type\""+":" + "0" +","+" \"data-binding\":"+"\"field2\""+"," +" \"column-num\""+":" + "10"+","+ " \"data-top\""+":" + "10"+","+ " \"column-attr\""+":" + "0"+","+ " \"column-icon\""+":" + "0"+"}"
+                tableColumnObj1="{"+"\"id\""+":" + "1"  +  ","  +"\"header\""+":" + "\"user\""  +","+  " \"data-type\""+":" + "0"+"," +" \"data-binding\":"+"\"user\""+"," +" \"column-num\""+":" + "10"+","+ " \"data-top\""+":" + "10"+","+ " \"column-attr\""+":" + "0"+","+ " \"column-icon\""+":" + "0"+"}"
+                tableColumnObj2="{"+"\"id\""+":" + "2"  +  ","   +"\"header\""+":" + "\"group\""+","+  " \"data-type\""+":" + "0" +","+" \"data-binding\":"+"\"group\""+"," +" \"column-num\""+":" + "10"+","+ " \"data-top\""+":" + "10"+","+ " \"column-attr\""+":" + "0"+","+ " \"column-icon\""+":" + "0"+"}"
+                tableColumnObj3="{"+"\"id\""+":" + "3"  +  ","   +"\"header\""+":" + "\"total\""+ "," +" \"data-type\""+":" + "0" +","+" \"data-binding\":"+"\"sum(total)\""+"," +" \"column-num\""+":" + "10"+","+ " \"data-top\""+":" + "10"+","+ " \"column-attr\""+":" + "0"+","+ " \"column-icon\""+":" + "0"+"}"
                 data=data+tableColumnObj1+","
-                data=data+tableColumnObj2
+                data=data+tableColumnObj2+","
+                data=data+tableColumnObj3
                 data=data+"]"
                 data=data+"}]"
                 

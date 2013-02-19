@@ -9,7 +9,7 @@ import time
 from mode import SendCmd
 
 if __name__ == '__main__':
-    print "Version 1.0.5   Release notes: Add in webservice feature\r\n "
+    print "Version 1.0.6   Release notes:Fixed create chart and schedule bug\r\n "
     faz_ip = raw_input("Enter FortiAnalyzer IP Address:\r\n")
     adom = raw_input("Enter Adom name,if no input,default will be 'root':\r\n")
     if adom == '':
@@ -185,7 +185,7 @@ if __name__ == '__main__':
     VIRUS:          11,\r\n  \
     WEBFILTER:      13,\r\n  \
     NETSCAN:        14,\r\n ")
-                    num=raw_input("Input number of datasets to create:")
+                    num=int(raw_input("Input number of datasets to create:"))
                     test._create_dataset(session, name,query,logtype,num)
                 elif tc == 3:
                     #num = int(raw_input("input number of datasets you wants to delete, name begins from dataset0 \r\n"))
